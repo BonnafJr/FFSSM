@@ -7,6 +7,18 @@ import java.time.LocalDate;
 
 public class Licence {
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Licence licence = (Licence) o;
+        return possesseur.equals(licence.possesseur) && numero.equals(licence.numero) && delivrance.equals(licence.delivrance) && club.equals(licence.club);
+    }
+
     public Personne possesseur;
 
     public String numero;
@@ -38,15 +50,17 @@ public class Licence {
         return club;
     }
 
-    /**
-     * Est-ce que la licence est valide à la date indiquée ?
-     * Une licence est valide pendant un an à compter de sa date de délivrance
-     * @param d la date à tester
-     * @return vrai si valide à la date d
-     **/
-    public boolean estValide(LocalDate d) {
-         // TODO: Implémenter cette méthode
-        throw new UnsupportedOperationException("Pas encore implémenté");
-    }
+    public boolean estValide(LocalDate d) throws Exception {
 
+        if (d.isAfter(delivrance) || d.isEqual(delivrance)) {
+            if (d.isAfter(delivrance.plusYears(1))) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            throw new Exception("La date entrée en parametre n'est pas valide");
+        }
+
+    }
 }
